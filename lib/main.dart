@@ -24,6 +24,7 @@ class _MyAppState extends State<MyApp> {
   };
 
   List<Meal> _availableMeals = DUMMY_MEALS;
+  List<Meal> _favoritedMeals = [];
 
   void _setFilters(Map<String, bool> filterData) {
     setState(() {
@@ -47,6 +48,25 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void _toggleFavorite(String id) {
+    // 조건을 만족하는 첫번째 아이템의 index를 반환함.
+    // 만약 매칭되는 아이템이 없다면 -1을 반환함.
+    final selectedMeal = DUMMY_MEALS.firstWhere((meal) => meal.id == id);
+    if (_favoritedMeals.contains(selectedMeal)) {
+      setState(() {
+        _favoritedMeals.remove(selectedMeal);
+      });
+    } else {
+      setState(() {
+        _favoritedMeals.add(selectedMeal);
+      });
+    }
+  }
+
+  bool _isMealFavorite(String id) {
+    return _favoritedMeals.any((meal) => meal.id == id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -67,7 +87,7 @@ class _MyAppState extends State<MyApp> {
                   color: Color.fromRGBO(20, 51, 51, 1),
                   fontWeight: FontWeight.bold))),
       // home은 app의 root screen
-      home: TabsScreen(),
+      home: TabsScreen(_favoritedMeals, _toggleFavorite),
       // routing 기능.
 
       // key-value mapping으로 특정 widget에 접근할 수 있음.
@@ -75,7 +95,8 @@ class _MyAppState extends State<MyApp> {
       routes: {
         CategoryMealsScreen.routeName: (context) =>
             CategoryMealsScreen(_availableMeals),
-        MealDetailScreen.routeName: (context) => MealDetailScreen(),
+        MealDetailScreen.routeName: (context) =>
+            MealDetailScreen(_toggleFavorite, _isMealFavorite),
         FilterScreen.routeName: (context) => FilterScreen(_setFilters, _filters)
       },
       // onGenerateRoute는 pushNamed를 이용할 때 routes table에 등록되지 않은 route에 대해 처리한다.

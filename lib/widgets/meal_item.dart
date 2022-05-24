@@ -10,7 +10,7 @@ class MealItem extends StatelessWidget {
   final int duration;
   final Complexity complexity;
   final Affordability affordability;
-  final Function removeItem;
+  final Function removeFromFavoritesScreen;
 
   MealItem(
       {required this.id,
@@ -19,16 +19,14 @@ class MealItem extends StatelessWidget {
       required this.duration,
       required this.complexity,
       required this.affordability,
-      required this.removeItem});
+      required this.removeFromFavoritesScreen});
 
   void _selectMeal(BuildContext context) {
     // pushNamed는 futer이다.
     // push한 page가 display가 끝나면 값을 반환한다.
-    Navigator.of(context).pushNamed(MealDetailScreen.routeName,
-        arguments: {"id": id}).then((result) {
-      if (result != null) {
-        removeItem(result);
-      }
+    Navigator.of(context).pushNamed(MealDetailScreen.routeName, arguments: {
+      "id": id,
+      "removeFromFavoritesScreen": removeFromFavoritesScreen
     });
   }
 

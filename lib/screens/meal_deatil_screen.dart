@@ -7,6 +7,11 @@ import '../dummy_data.dart';
 class MealDetailScreen extends StatelessWidget {
   static const routeName = '/meal-detail';
 
+  final Function toggleFavorite;
+  final Function isMealFavorite;
+
+  MealDetailScreen(this.toggleFavorite, this.isMealFavorite);
+
   Widget buildSectionTitle(BuildContext context, String text) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
@@ -33,6 +38,8 @@ class MealDetailScreen extends StatelessWidget {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     final mealId = args['id'];
     final selectedMeal = DUMMY_MEALS.firstWhere((meal) => meal.id == mealId);
+    final removeFromFavoritesScreen = args['removeFromFavoritesScreen'];
+
     return Scaffold(
       appBar: AppBar(
         title: Text(selectedMeal.title),
@@ -81,9 +88,12 @@ class MealDetailScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.delete),
+        child: isMealFavorite(selectedMeal.id)
+            ? Icon(Icons.star_outlined)
+            : Icon(Icons.star_border),
         onPressed: () {
-          Navigator.of(context).pop(mealId);
+          toggleFavorite(selectedMeal.id);
+          removeFromFavoritesScreen(selectedMeal.id);
         },
       ),
     );

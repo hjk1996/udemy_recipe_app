@@ -76,7 +76,7 @@ class _MyAppState extends State<MyApp> {
         CategoryMealsScreen.routeName: (context) =>
             CategoryMealsScreen(_availableMeals),
         MealDetailScreen.routeName: (context) => MealDetailScreen(),
-        FilterScreen.routeName: (context) => FilterScreen(_setFilters)
+        FilterScreen.routeName: (context) => FilterScreen(_setFilters, _filters)
       },
       // onGenerateRoute는 pushNamed를 이용할 때 routes table에 등록되지 않은 route에 대해 처리한다.
       // dynamic한 application을 만들 때 사용하는 것을 고려해볼 만함.

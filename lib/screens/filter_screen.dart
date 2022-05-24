@@ -7,10 +7,11 @@ import 'package:flutter_complete_guide/widgets/main_drawer.dart';
 class FilterScreen extends StatefulWidget {
   static String routeName = '/filters';
 
+  final Map<String, bool> filters;
   // 설정한 필터값을 저장함. (main.dart로 state를 전송함.)
   final Function saveFilters;
 
-  FilterScreen(this.saveFilters);
+  FilterScreen(this.saveFilters, this.filters);
 
   @override
   State<FilterScreen> createState() => _FilterScreenState();
@@ -21,6 +22,15 @@ class _FilterScreenState extends State<FilterScreen> {
   var _vegetarian = false;
   var _vegan = false;
   var _lactoseFree = false;
+
+  @override
+  void initState() {
+    _glutenFree = widget.filters['gluten']!;
+    _vegetarian = widget.filters['vegetarian']!;
+    _vegan = widget.filters['vegan']!;
+    _lactoseFree = widget.filters['lactose']!;
+    super.initState();
+  }
 
   Widget _buildSwitchListTile(String title, String subtitle, bool currentValue,
       Function changeHandler) {
@@ -41,13 +51,12 @@ class _FilterScreenState extends State<FilterScreen> {
           actions: <Widget>[
             IconButton(
                 onPressed: () {
-                  final selectedFilters = {
+                  widget.saveFilters({
                     "gluten": _glutenFree,
                     "lactose": _lactoseFree,
                     "vegan": _vegan,
                     "vegetarian": _vegetarian
-                  };
-                  widget.saveFilters(selectedFilters);
+                  });
                 },
                 icon: Icon(Icons.save))
           ],

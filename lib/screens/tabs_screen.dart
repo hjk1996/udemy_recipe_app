@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/screens/favorites_screen.dart';
+import 'package:flutter_complete_guide/widgets/main_drawer.dart';
 import './categories_screen.dart';
 
 class TabsScreen extends StatefulWidget {
@@ -31,6 +32,8 @@ class _TabsScreenState extends State<TabsScreen> {
       appBar: AppBar(
         title: Text(_pages[_selectedPageIndex]["title"]),
       ),
+      // 옆에서 슬라이딩 되는 햄버거 메뉴
+      drawer: MainDrawer(),
       // TabBarView의 children의 순서는 AppBar에 있는 TabBar의 children의 순서와 같아야한다.
       body: _pages[_selectedPageIndex]["page"],
       bottomNavigationBar: BottomNavigationBar(
